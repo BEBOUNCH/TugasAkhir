@@ -1,10 +1,9 @@
 <template>
   <div class="col">
-    <!-- <div class="card kartu"> -->
     <div
       :class="[
-        'card  border-secondary',
-        isGrid ? '' : 'kartu'
+        'card border-secondary',
+        isGrid ? 'p-1' : 'kartu'
       ]"
     >
       <div

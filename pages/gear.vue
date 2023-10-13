@@ -64,6 +64,9 @@
         <button class="btn btn-checkout text-white" type="button"><strong>Checkout</strong></button>
       </div>
     </div>
+    <ul v-for='(cart, index) in isiCarts' :key="index">
+      <li>{{cart}}</li>
+    </ul>
 	</div>
 </template>
 <script>
@@ -77,48 +80,7 @@ export default {
   data() {
     return {
       // Daftar task
-      items: [
-        {
-          img: 'item/Camera.jpg',
-          title: 'Nikon D810 Camera',
-          mainDes: 'Include Lens Nikkor 50mm f/1.8G, 36.3 MP FX, 1080p Video at 60 fps',
-          description: 'ISO: 64-12,800, Touch Screen Fixed, USB 3.0, Port headphone dan mikrofon, 980 gram (frame only)',
-          price: 59999,
-          amount: 1
-        },
-        {
-          img: 'item/Lighting.jpg',
-          title: 'Godox Lighting',
-          mainDes: '600 watt-second, Support flash TTL, 5600K',
-          description: 'Dimension 220x245x125mm,ll Weight 2,9 kg II (with battery) || Battery lithium-ion 11.1V / 8700mAh',
-          price: 34999,
-          amount: 1
-        },
-        {
-          img: 'item/Gimbal.jpg',
-          title: 'DJI Gimbal',
-          mainDes: 'Support A7 + 24-70mm, Bluetooth Control, 1.4 Touchscreen',
-          description: 'Battery 2450 mAh, Upto 10H, USB-C, Weight 795 gram Rotation 360°/s',
-          price: 44999,
-          amount: 1
-        },
-        {
-          img: 'item/Camera2.jpg',
-          title: 'Canon EOS 5D Camera',
-          mainDes: 'Include Len Canon EF 24-70mm f/2.8L, 12.8 MP FX, ISO: 100-1600',
-          description: 'Only photograph, LCD TFT 2.5 inch fix, USB 2.0, 895 gram',
-          price: 59000,
-          amount: 1
-        },
-        {
-          img: 'item/Tripod.jpg',
-          title: 'Basic Aluminium Tripod',
-          mainDes: 'Support A7 + 24-70mm',
-          description: 'Aluminium Material, Concise, Strong, Easy Use',
-          price: 19999,
-          amount: 1
-        }
-      ],
+      items: [],
       // Tipe layout daftar task
       isGrid: false,
       // Variabel penampung teks pencarian
@@ -148,7 +110,18 @@ export default {
       return total * this.daysBorrow
     },
   },
+  mounted() {
+    this.getCards();
+  },
   methods: {
+    async getCards() {
+        const response = await this.$axios.get("/rest/v1/items", {
+          headers: {
+            apikey: process.env.supabaseKey
+          }
+        })
+        this.items = response?.data
+      },
     handleButtonClick(dataIndex) {
       for (let i = 0; i < this.isiCarts.length; i++) {
         if (this.isiCarts[i].title === this.items[dataIndex].title) {
@@ -162,7 +135,7 @@ export default {
     },
     decrementCounter(dataIndex) {
       if (this.isiCarts[dataIndex].amount === 1) {
-        return alert('The Minimum Amount Of Items Must Be 1')
+        return alert('The Minimum Amount Of Item Must Be 1')
       }
       this.isiCarts[dataIndex].amount--
     },
@@ -174,7 +147,7 @@ export default {
     },
     decrementDay() {
       if (this.daysBorrow === 1) {
-        return alert('The Minimum AmountMinimum day to borrow is 1 day Of Items Must Be 1')
+        return alert('The Minimum Amount day to borrow is 1 day')
       }
       this.daysBorrow--
     }

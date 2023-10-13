@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-
-  </div>
+		<h3 class="text-white mt-4">Administrator Order</h3>
+	</div>
 </template>
 <script>
 export default {
-  layout: 'admin',
+	layout: 'admin',
 }
 </script>
